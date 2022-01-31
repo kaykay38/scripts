@@ -1,0 +1,432 @@
+#!/usr/bin/env python3
+import sys, os, datetime, re, shutil, getopt, argparse
+from pathlib import Path
+
+USAGE_MSG= "todo by default displays today's TODO items\n\n" +\
+"USAGE:\n" +\
+"   todo [OPTIONS] <ARGUMENT>\n\n" +\
+"   <ARGUMENT>           Display specified date's TODO items\n" +\
+"      t, today             today's TODO file\n" +\
+"      prev, previous       previous most recent TODO file\n" +\
+"      <date> ie. 6/16      specific date\n" +\
+"           todo prev       display TODO items in previous TODO file\n" +\
+"           todo 6/12       display TODO items on date 6/16\n\n" +\
+"OPTIONS:\n" +\
+"   -h, --help           Display help\n" +\
+"   -t <ARGUMENT>        Toggle completion of matching TODO item from today's TODO list\n" +\
+"      <number>             number of the TODO item\n" +\
+"      <title/description>  TODO description\n" +\
+"   -a <ARGUMENT>        Add new TODO item to today's todo list\n" +\
+"   -c <ARGUMENT>        Change/edit matching TODO item from today's todo list\n" +\
+"      <number>             number of the TODO item\n" +\
+"      <title/description>  TODO description\n" +\
+"   -d <ARGUMENT>        Delete matching TODO item from today's todo list\n" +\
+"      <number>             number of the TODO item\n" +\
+"      <title/description>  TODO description\n" +\
+"   -e <ARGUMENT>        Edit specified date's TODO file\n" +\
+"      t, today             today's TODO file\n" +\
+"      prev, previous       previous most recent TODO file\n" +\
+"      <date> ie. 6/16      specific date\n" +\
+"   -s <ARGUMENT>        Display this week's or specified date week schedule/deadlines\n" +\
+"      t, today             today's TODO file\n" +\
+"      prev, previous       previous most recent TODO file\n" +\
+"      <date> ie. 6/16      specific date\n" +\
+"   -v, --version        Display version information\n" 
+INFO_MSG="todo 1.2 (June 30, 2021)\n" +\
+"kaykay38 <https://github.com/kaykay38>\n" +\
+"Written in python\n\n" +\
+"todo displays and creates a daily TODO list.\n" +\
+"By default, todo will create the TODO directory in $HOME/OneDrive on Linux.\n" +\
+"Running `todo` will display today's todo items.\n"
+
+OS = sys.platform
+TODO_DIR=os.environ['TODODIR']
+# print("ONEDRIVE_DIR", ONEDRIVE_DIR)
+if not TODO_DIR:
+    ONEDRIVE_DIR=os.environ['ONEDRIVE']
+    if not ONEDRIVE_DIR:
+        ONEDRIVE_DIR = "OneDrive"
+        TODO_DIR = str(Path.home()) + "/" + ONEDRIVE_DIR + "/TODO/"
+    else:
+        TODO_DIR = ONEDRIVE_DIR + "/TODO/"
+# print("TODO_DIR: " + TODO_DIR)
+today = datetime.datetime.now()
+# print("prev_todo_file_path: " + prev_todo_file_path)
+todo_file_name = today.strftime("TODO_%Y-%m-%d.md")
+todo_file_path = TODO_DIR + todo_file_name
+prev_file_path = TODO_DIR + ".prev"
+today_file_path = TODO_DIR + ".today"
+prev_todo_file_path = ""
+
+def this_weekday(d, weekday):
+    days_ahead = weekday - d.weekday()
+    return (d + datetime.timedelta(days_ahead)).strftime("%m/%d")
+
+def get_filepath_from_arg(arg):
+    if arg == "prev" or arg == "previous":
+        with open(prev_file_path) as prev_file:
+            return TODO_DIR+prev_file.readline().strip()
+    elif arg == "t" or arg == "today":
+        return todo_file_path
+    elif re.match("\d*/\d*",arg):
+        file_path=""
+        # print("Matched date format")
+        if re.match("\d\d/\d/\d\d\d\d$",arg):
+            args = arg.split("/")
+            # print("Matched '\d\d/\d\d/\d\d\d\d$' args:",args)
+            file_path = TODO_DIR+"TODO_"+args[2]+"-"+args[0]+"-0"+args[1]+".md"
+            # print("file_path:",file_path)
+        elif re.match("\d\d/\d\d$",arg):
+            args = arg.split("/")
+            # print("Matched '\d\d/\d\d$' args:",args)
+            file_path = TODO_DIR+today.strftime("TODO_%Y")+"-"+args[0]+"-"+args[1]+".md"
+            # print("file_path:",file_path)
+        elif re.match("\d\d/\d$",arg):
+            args = arg.split("/")
+            # print("Matched '\d\d/\d$' args:",args)
+            file_path = TODO_DIR+today.strftime("TODO_%Y")+"-"+args[0]+"-0"+args[1]+".md"
+            # print("file_path:",file_path)
+        elif re.match("\d/\d\d$",arg):
+            args = arg.split("/")
+            # print("Matched '\d/\d\d$' args:",args)
+            file_path = TODO_DIR+today.strftime("TODO_%Y")+"-0"+args[0]+"-"+args[1]+".md"
+            # print("file_path:",file_path)
+        elif re.match("\d/\d$",arg):
+            args = arg.split("/")
+            # print("Matched '\d/\d$' args:",args)
+            file_path = TODO_DIR+today.strftime("TODO_%Y")+"-0"+args[0]+"-0"+args[1]+".md"
+            # print("file_path:",file_path)
+        elif re.match("\d/\d/\d\d$",arg):
+            args = arg.split("/")
+            # print("Matched '\d/\d/\d\d$' args:",args)
+            file_path = TODO_DIR+"TODO_20"+args[2]+"-0"+args[0]+"-0"+args[1]+".md"
+            # print("file_path:",file_path)
+        elif re.match("\d/\d\d/\d\d$",arg):
+            args = arg.split("/")
+            # print("Matched '\d/\d/\d\d$' args:",args)
+            file_path = TODO_DIR+"TODO_20"+args[2]+"-0"+args[0]+"-"+args[1]+".md"
+            # print("file_path:",file_path)
+        elif re.match("\d\d/\d/\d\d$",arg):
+            args = arg.split("/")
+            # print("Matched '\d/\d/\d\d$' args:",args)
+            file_path = TODO_DIR+"TODO_20"+args[2]+"-"+args[0]+"-0"+args[1]+".md"
+            # print("file_path:",file_path)
+        elif re.match("\d\d/\d\d/\d\d$",arg):
+            args = arg.split("/")
+            # print("Matched '\d/\d/\d\d$' args:",args)
+            file_path = TODO_DIR+"TODO_20"+args[2]+"-"+args[0]+"-"+args[1]+".md"
+            # print("file_path:",file_path)
+        elif re.match("\d/\d/\d\d\d\d$",arg):
+            args = arg.split("/")
+            # print("Matched '\d/\d/\d\d\d\d$' args:",args)
+            file_path = TODO_DIR+"TODO_"+args[2]+"-0"+args[0]+"-0"+args[1]+".md"
+            # print("file_path:",file_path)
+        elif re.match("\d/\d\d/\d\d\d\d$",arg):
+            args = arg.split("/")
+            # print("Matched '\d/\d\d/\d\d\d\d$' args:",args)
+            file_path = TODO_DIR+"TODO_"+args[2]+"-0"+args[0]+"-"+args[1]+".md"
+            # print("file_path:",file_path)
+        elif re.match("\d\d/\d\d/\d\d\d\d$",arg):
+            args = arg.split("/")
+            # print("Matched '\d\d/\d\d/\d\d\d\d$' args:",args)
+            file_path = TODO_DIR+"TODO_"+args[2]+"-"+args[0]+"-"+args[1]+".md"
+            # print("file_path:",file_path)
+        if os.path.exists(file_path):
+            # with open(file_path) as todo_file:
+                # lines = todo_file.readlines()
+            # date="("+lines[0].strip()+")"
+            # return (file_path, date)
+            return file_path
+    print("No TODO file exists for '"+arg+"'")
+    sys.exit(1)
+
+def print_todolist(file_path):
+    lines=[]
+    date=""
+    todoNum=1
+    with open(file_path) as todo_file:
+        lines = todo_file.readlines()
+    date="("+lines[0].strip()+")"
+    for line in lines:
+        if re.match("##\s*TODO",line):
+            line = re.search("##\s*(TODO\s*.*)",line)
+            print(line.group(1).strip(),date+"\n--------------------------------------")
+        elif re.match("^-\s*(\[)\s*(\s|x|X)\s*(\])\s*(.+$)",line):       
+            line = re.search("^-\s*(\[)\s*(\s|x|X)\s*(\])\s*(.+$)",line)
+            print(todoNum,line.group(1)+line.group(2)+line.group(3),line.group(4))
+            todoNum+=1
+
+
+if not os.path.exists(todo_file_path):
+    # print("today_file_path:", today_file_path)
+    # print("prev_file_path:", prev_file_path)
+    with open(today_file_path) as today_file:
+        today_todo_file_path=TODO_DIR+today_file.readline().strip()
+        # print("today_todo_file_path:", today_todo_file_path)
+    if today_todo_file_path != todo_file_path and os.path.exists(today_todo_file_path):
+        shutil.copyfile(today_file_path,prev_file_path);
+    
+    with open(prev_file_path) as prev_file:
+        prev_todo_file_path=TODO_DIR+prev_file.readline().strip()
+    # print("1st if, if todofile not exist: prev_todo_file_path: ",prev_todo_file_path)
+    if os.path.exists(prev_todo_file_path):
+        with open(prev_todo_file_path) as prev_todo_file:
+            prev_todo_monday = ""
+            for line in prev_todo_file:
+                if re.match("\s*\|\s*.*\s*\|\s*MON\s*(\d{2}/\d{2})", line):
+                    prev_todo_monday = re.search("MON\s+(\d\d/\d\d)\s*", line).group(1)
+
+    else:
+        # print("\"" + prev_todo_file_path + "\" does not exist.")
+        sys.exit(1)
+    cur_monday = this_weekday(today, 0) # 0 = Monday, 1=Tuesday, 2=Wednesday...
+    date_string = today.strftime("%a %b %d, %Y")
+
+    # print("prev_todo_monday",prev_todo_monday)
+    # print("cur_monday", cur_monday)
+    weekday = today.strftime("%a")
+
+    if weekday == "Mon" or prev_todo_monday != cur_monday:
+        # print("prev_todo_monday",prev_todo_monday)
+        # print("cur_monday", cur_monday)
+        # print("weekday == \"Mon\" or prev_todo_monday != cur_monday")
+        cur_tuesday = this_weekday(today, 1) # 0 = Monday, 1=Tuesday, 2=Wednesday...
+        cur_wednesday = this_weekday(today, 2) # 0 = Monday, 1=Tuesday, 2=Wednesday...
+        cur_thursday = this_weekday(today, 3) # 0 = Monday, 1=Tuesday, 2=Wednesday...
+        cur_friday = this_weekday(today, 4) # 0 = Monday, 1=Tuesday, 2=Wednesday...
+        cur_saturday = this_weekday(today, 5) # 0 = Monday, 1=Tuesday, 2=Wednesday...
+        cur_sunday = this_weekday(today, 6) # 0 = Monday, 1=Tuesday, 2=Wednesday...
+
+        todo_file = open(todo_file_path, "a+")
+
+        DEADLINES="\n\n## DEADLINES\n"+\
+        "--------------------------------------------------------------------------------------------------------------------------\n"+\
+        "| CLASS   | MON "+ cur_monday +"     | TUE "+ cur_tuesday +"     | WED "+ cur_wednesday +"     | THU "+ cur_thursday +"    | FRI "+ cur_friday +"     | SAT "+ cur_saturday +"     | SUN "+ cur_sunday +"     |\n"+\
+        "|---------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|\n"+\
+        "|         |               |               |               |               |               |               |               |\n"+\
+        "|         |               |               |               |               |               |               |               |\n"+\
+        "|         |               |               |               |               |               |               |               |\n"+\
+        "\n"+\
+        "## TODO\n"+\
+        "---------------------------------------------\n"+\
+        "- [ ] "
+        SCHEDULE=date_string+\
+        "\n\n## SCHEDULE\n"+\
+        "-----------------------------------------------------------------------------------------------------------\n"+\
+        "| TIME  | MON "+ cur_monday +"   | TUE "+ cur_tuesday +"   | WED "+ cur_wednesday +"   | THU "+ cur_thursday +"   | FRI "+ cur_friday +"   | SAT "+ cur_saturday +"   | SUN "+ cur_sunday +"   |\n"+\
+        "|-------|-------------|-------------|-------------|-------------|-------------|-------------|-------------|\n"+\
+        "|  7 AM |             |             |             |             |             |             |             |\n"+\
+        "|  8 AM |             |             |             |             |             |             |             |\n"+\
+        "|  9 AM |             |             |             |             |             |             |             |\n"+\
+        "| 10 AM |             |             |             |             |             |             |             |\n"+\
+        "| 11 AM |             |             |             |             |             |             |             |\n"+\
+        "| 12 PM |             |             |             |             |             |             |             |\n"+\
+        "|  1 PM |             |             |             |             |             |             |             |\n"+\
+        "|  2 PM |             |             |             |             |             |             |             |\n"+\
+        "|  3 PM |             |             |             |             |             |             |             |\n"+\
+        "|  4 PM |             |             |             |             |             |             |             |\n"+\
+        "|  5 PM |             |             |             |             |             |             |             |\n"+\
+        "|  6 PM |             |             |             |             |             |             |             |\n"+\
+        "|  7 PM |             |             |             |             |             |             |             |\n"+\
+        "|  8 PM |             |             |             |             |             |             |             |\n"+\
+        "|  9 PM |             |             |             |             |             |             |             |\n"+\
+        "| 10 PM |             |             |             |             |             |             |             |\n"+\
+        "\n"+\
+        "## TODO\n"+\
+        "---------------------------------------------\n"
+        todo_file.write(SCHEDULE)
+        todo_file.close()
+    else:
+        # print("else if same week, prev_todo_file_path", prev_todo_file_path)
+        with open(prev_todo_file_path) as prev_todo:
+            lines = prev_todo.readlines()
+        lines[0] = date_string + "\n"
+        with open(todo_file_path, "w") as todo:
+            for line in lines:
+                if not re.match("^\s*-\s*\[\s*(x|X)\s*\]\s*.+",line):       
+                    todo.write(line)
+    # print("today_file_path:", today_file_path)
+    # print("todo_file_path:", todo_file_path)
+    if today_file_path != todo_file_name:
+        with open(today_file_path,"w") as today_file:
+            today_file.write(todo_file_name)
+# print("OS: " + OS)
+# print("todo_file_path: " + todo_file_path)
+def main(argv):
+    try:
+        opts=""
+        if len(argv) >= 1:
+            if re.match("prev|previous", argv[0]) or re.match("\d*/\d*", argv[0]):
+                file_path = get_filepath_from_arg(argv[0])
+                print_todolist(file_path)
+                sys.exit()
+            else:
+                opts, args = getopt.getopt(argv,"l:e:a:d:c:t:hs:v",["help","version"])
+    except getopt.GetoptError:
+        print(USAGE_MSG)
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-e':
+            file_path = get_filepath_from_arg(arg)
+            if OS == "linux" or OS == "darwin":
+                # print("todo_file_path", file_path)
+                os.system("cd \""+TODO_DIR+"\" && $EDITOR \""+file_path+"\"")
+            sys.exit()
+        # elif opt == '-t':
+        #     if OS == "linux" or OS == "darwin":
+        #         # print("todo_file_path", file_path)
+        #         os.system("cd \""+TODO_DIR+"\" && $EDITOR \""+todo_file_path+"\"")
+        #     sys.exit()
+        elif opt in ('-h','--help'):
+            print (USAGE_MSG)
+            sys.exit()
+        elif opt in ('-v','--version'):
+            print (INFO_MSG)
+            sys.exit()
+        elif opt == '-s':
+            lines=[]
+            date=""
+            file_path = get_filepath_from_arg(arg)
+            with open(file_path) as todo_file:
+                lines = todo_file.readlines()
+            date="("+lines[0].strip()+")"
+            for line in lines:
+                if re.match("^##\s*(DEADLINES|SCHEDULE)",line):
+                    line = re.search("^##\s*(DEADLINES|SCHEDULE)",line)
+                    print(line.group(1)+" "+date)
+                elif re.match("^\s*\|\s*.*\s*\|\s*.*\s*\|\s*.*\s*\|\s*.*\s*.*",line) or\
+                    re.match("^\s*----------------------------------------------", line): 
+                    print(line.strip())
+            sys.exit()
+
+        elif opt == '-a':
+            with open(todo_file_path,'a') as todo_file:
+                todo_file.write("- [ ] "+arg+"\n")
+            print("New TODO added:", arg+"\n")
+            print_todolist(todo_file_path)
+            sys.exit()
+
+        elif opt == '-d':
+            lines=[]
+            with open(todo_file_path) as todo_file:
+                lines = todo_file.readlines()
+
+            with open(todo_file_path) as todo_file:
+                todoNum=1
+                match=""
+                for i in range(len(lines)):
+                    if re.match("^\d+$",arg):
+                        match = re.match("^-\s*(\[)\s*(\s|x|X)\s*(\])\s*(.+$)",lines[i])
+                        if match:       
+                            if int(arg)==todoNum:
+                                print("Delete TODO item:", match.group(4).strip()+"? (y/n)")
+                                option = input(">> ")
+                                if option=="y":
+                                    lines[i]=""
+                                    # print("match todo num:", match.group(), "\nline:",lines[i])
+                                    print("Deleted TODO item:", match.group(4).strip()+"\n")
+                                    break
+                            todoNum+=1
+                    match = re.match("^-\s*(\[)\s*(\s|x|X)\s*(\])\s*("+arg+".*$)",lines[i],re.IGNORECASE)
+                    if match:       
+                        print("Delete TODO item:", match.group(4).strip()+"? (y/n)")
+                        option = input(">> ")
+                        if option=="y":
+                            lines[i]="" 
+                           # print("match todo name:", match.group(), "\nline:",lines[i])
+                            print("Deleted TODO item:", match.group(4).strip()+"\n")
+                            break
+                with open(todo_file_path,"w") as todo_file:
+                    for line in lines:
+                        if line != "":
+                            todo_file.write(line)
+            print_todolist(todo_file_path)
+            sys.exit()
+
+        elif opt == '-t':
+            lines=[]
+            with open(todo_file_path) as todo_file:
+                lines = todo_file.readlines()
+
+            with open(todo_file_path) as todo_file:
+                todoNum=1
+                match=""
+                for i in range(len(lines)):
+                    if re.match("^\d+$",arg):
+                        match = re.match("^-\s*(\[)\s*(\s|x|X)\s*(\])\s*(.+$)",lines[i])
+                        if match:       
+                            if int(arg) == todoNum:
+                                if re.match("\s",match.group(2)):
+                                    print("Mark as complete:", match.group(4).strip()+"? (y/n)")
+                                    option = input(">> ")
+                                    if option == "y":
+                                        lines[i] = "- [X] " + match.group(4)+"\n"
+                                        break
+                                else:
+                                    print("Mark as incomplete:", match.group(4).strip()+"? (y/n)")
+                                    option = input(">> ")
+                                    if option == "y":
+                                        lines[i] = "- [ ] " + match.group(4)+"\n"
+                                    # print("match todo num:", match.group(), "\nline:",lines[i])
+                                        break
+                            todoNum+=1
+                    match = re.match("^-\s*(\[)\s*(\s|x|X)\s*(\])\s*("+arg+".*$)",lines[i],re.IGNORECASE)
+                    if match:       
+                            if re.match("\s",match.group(2)):
+                                print("Mark as complete:", match.group(4).strip()+"? (y/n)")
+                                option = input(">> ")
+                                if option == "y":
+                                    lines[i] = "- [X] " + match.group(4)+"\n"
+                                    break
+                            else:
+                                print("Mark as incomplete:", match.group(4).strip()+"? (y/n)")
+                                option = input(">> ")
+                                if option == "y":
+                                    lines[i] = "- [ ] " + match.group(4)+"\n"
+                                   # print("match todo name:", match.group(), "\nline:",lines[i])
+                                    break
+                with open(todo_file_path,"w") as todo_file:
+                    for line in lines:
+                        if line != "":
+                            todo_file.write(line)
+            print_todolist(todo_file_path)
+            sys.exit()
+
+        elif opt == '-c':
+            lines=[]
+            with open(todo_file_path) as todo_file:
+                lines = todo_file.readlines()
+
+            with open(todo_file_path) as todo_file:
+                todoNum=1
+                match=""
+                for i in range(len(lines)):
+                    if re.match("^\d+$",arg):
+                        match = re.match("^-\s*(\[)\s*(\s|x|X)\s*(\])\s*(.+$)",lines[i])
+                        if match:       
+                            if int(arg) == todoNum:
+                                print("Change/Edit:", match.group(4).strip()+"? (y/n)")
+                                option = input(">> ")
+                                if option == "y":
+                                    new_description = input("New description: ")
+                                    lines[i] = "- ["+match.group(2)+"] " + new_description+"\n"
+                                    break
+                            todoNum+=1
+                    match = re.match("^-\s*(\[)\s*(\s|x|X)\s*(\])\s*("+arg+".*$)",lines[i],re.IGNORECASE)
+                    if match:       
+                            print("Change/Edit:", match.group(4).strip()+"? (y/n)")
+                            option = input(">> ")
+                            if option == "y":
+                                new_description = input("New description: ")
+                                lines[i] = "- ["+match.group(2)+"] " + new_description+"\n"
+                                break
+                with open(todo_file_path,"w") as todo_file:
+                    for line in lines:
+                        todo_file.write(line)
+            print_todolist(todo_file_path)
+            sys.exit()
+
+    print_todolist(todo_file_path)
+    sys.exit()
+
+main(sys.argv[1:])

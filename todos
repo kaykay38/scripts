@@ -1,0 +1,74 @@
+#!/bin/bash
+IFS='/'     # space is set as delimiter
+read -ra DATE <<< "$1"   # str is read into an array as tokens separated by IFS
+IFS=' '
+# for i in "${DATE[@]}";
+# do   # access each element of array
+#     echo "$i"
+# done
+DATE_LEN="${#DATE[@]}"
+OS="$(uname)"
+TODO_DIR="$ONEDRIVE/TODO"
+if [[ "$DATE_LEN" -eq 3 ]]; then
+    # printf '"$DATE_LEN" -eq 3\n'
+    mon="${DATE[0]}"
+    day="${DATE[1]}"
+    year="${DATE[2]}"
+    date="$(date -j -v"$mon"m -v"$day"d -v"$year"y '+%m %d %Y %a')"
+    read -ra DATE <<< "$date"
+    if [[ $OS =~ Darwin ]]; then
+        date="(${DATE[3]} ${DATE[0]}/${DATE[1]}/${DATE[2]})"
+    else
+        date="$(date -d "$mon/$day/$year" '+%m %d %Y %a')"
+    fi
+    todofile="$TODO_DIR/TODO_${DATE[2]}-${DATE[0]}-${DATE[1]}.md"
+elif [[ "$DATE_LEN" -eq 2 ]]; then
+    # printf '"$DATE_LEN" -eq 2\n'
+    mon="${DATE[0]}"
+    day="${DATE[1]}"
+    year="$(date '+%Y')"
+    if [[ $OS =~ Darwin ]]; then
+        date="$(date -j -v"$mon"m -v"$day"d -v"$year"y '+%m %d %Y %a')"
+    else
+        date="$(date -d "$mon/$day/$year" '+%m %d %Y %a')"
+    fi
+    read -ra DATE <<< "$date"
+    todofile="$TODO_DIR/TODO_${DATE[2]}-${DATE[0]}-${DATE[1]}.md"
+    date="(${DATE[3]} ${DATE[0]}/${DATE[1]}/${DATE[2]})"
+    # printf "date: $date\n"
+    # printf "Month: $mon\nDay: $day\nYear: $year\n"
+    # printf "todofile: $todofile\n"
+else
+    read -ra DATE <<< "$(date '+%m %d %Y')"
+    mon="${DATE[0]}"
+    day="${DATE[1]}"
+    year="${DATE[2]}"
+    todofile="$TODO_DIR/TODO_$year-$mon-$day.md"
+    # printf "Month: $mon\nDay: $day\nYear: $year\n"
+    # printf "todofile: $todofile\n"
+    [[ "$DATE_LEN" -eq 1 ]] && weekday="$(echo "$1" | tr "[a-z]" "[A-Z]")"
+fi
+if [[ -z "$weekday" ]]; then
+    if [[ $(uname -s) =~ Darwin ]]; then
+        weekday="$(date -j -v"$mon"m -v"$day"d -v"$year"y '+%a' | tr "[a-z]" "[A-Z]")"
+    else
+        weekday="$(date -d "$mon/$day/$year" '+%a' | tr "[a-z]" "[A-Z]")"
+    fi
+fi
+# printf "weekday: $weekday\n"
+case $weekday in
+    MON|MONDAY) weekdayCol='$3';;
+    TUE|TUESDAY) weekdayCol='$4' ;;
+    WED|WEDNESDAY) weekdayCol='$5' ;;
+    THU|THURSDAY) weekdayCol='$6' ;;
+    FRI|FRIDAY) weekdayCol='$7' ;;
+    SAT|SATURDAY) weekdayCol='$8' ;;
+    SUN|SUNDAY) weekdayCol='$9' ;;
+    *) echo -e "Invalid date. Use m/d or mm/dd format.\n    ex. \`todos 6/12\`" && exit 1
+esac
+# printf "weekdayCol: $weekdayCol\n"
+if [[ -f "$todofile" ]]; then
+    awk -F '|' '/SCHEDULE/ { print "SCHEDULE " "'"$date"'" "\n" } /DEADLINES/ { print "DEADLINES " "'"$date"'" "\n" } /^\|/ {print $2 "|" '$weekdayCol'}' "$todofile"
+else
+   printf "No TODO file exists for specified date.\n" && exit 1
+fi

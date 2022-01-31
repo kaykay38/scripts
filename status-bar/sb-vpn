@@ -1,0 +1,4 @@
+#!/bin/sh
+if [[ ! -z "$(ip a | grep 'tun0' | grep 'inet')" ]]; then
+	echo "  ﱾ  Connected  |"
+fi

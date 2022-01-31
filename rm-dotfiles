@@ -1,0 +1,15 @@
+#!/bin/sh
+
+delete() {
+for dir in "$1/*"
+	do
+    for file in $dir/.*;
+    do
+        rm "$file";
+	done
+done
+}
+
+printf "Delete dotfiles permanently in all folders contained in $1.\nDo you want to proceed? (yes/no): "
+read ans
+[[ $ans = yes ]] && delete "$1"

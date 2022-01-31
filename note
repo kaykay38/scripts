@@ -1,0 +1,40 @@
+#!/bin/sh
+quarterDir="$HOME/OneDrive/2020-21Q2Winter"
+class="$1"
+topic="$2"
+fileName="Notes/$(date "+%Y-%m-%d_%a").md"
+classHeader=""
+
+[[ -z "$class" ]] && class="$(basename "$(pwd)")"
+
+case "$class" in
+    cs320|CSCD320-Algorithms)
+        cd "$quarterDir/CSCD320-Algorithms"
+        classHeader="CSCD320 Algorithms"
+    ;;
+    cs378|CSCD378-WebDev)
+        cd "$quarterDir/CSCD378-WebDev"
+        classHeader="CSCD378 Web Dev"
+    ;;
+    cs488|CSCD488-SeniorProject)
+        cd "$quarterDir/CSCD488-SeniorProject"
+        classHeader="CSCD488 Senior Project"
+    ;;
+    cs496|CSCD496-MachineLearning)
+        cd "$quarterDir/CSCD496-MachineLearning"
+        classHeader="CSCD496 Machine Learning"
+    ;;
+esac
+
+[[ ! -d 'Notes' ]] && mkdir -p Notes
+
+if [[ ! -f "$fileName" ]]; then
+    note="$(date "+%a %b %d, %Y<br>")\n"$class"<br>\n## $topic\n"
+    printf "$note" > "./$fileName"
+fi
+
+if [[ -z "$EDITOR" ]]; then
+    open "./$fileName" || xdg-open "./$fileName"
+else
+    $EDITOR "./$fileName" 
+fi

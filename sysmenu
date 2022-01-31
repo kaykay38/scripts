@@ -1,0 +1,16 @@
+#!/bin/bash
+
+MENU="$(printf "  Lock\n鈴  Suspend\n  Logout\n  Reboot\n⏾ Hibernate\n  Shutdown" | \
+rofi -no-lazy-grab -matching fuzzy -dmenu -i -p 'SYSTEM' \
+-theme '$HOME/.config/rofi/text.rasi' \
+-theme-str 'window {width: 13%;}' \
+-theme-str 'listview {lines: 6;}' \
+-font 'NotoSans Nerd Font 16' )"
+case "$MENU" in
+  *Lock) i3lock-script;;
+  *Sleep) systemctl suspend;;
+  *Logout) kill -9 -1;;
+  *Reboot) systemctl reboot;;
+  *Hibernate) systemctl hibernate;;
+  *Shutdown) systemctl poweroff;;
+esac

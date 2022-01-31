@@ -1,0 +1,5 @@
+# Autostart settings
+/home/mia/.config/.system/settings.sh
+/home/mia/.config/.system/dwm-bar.sh
+# dwmblocks
+exec dwm

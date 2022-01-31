@@ -1,0 +1,20 @@
+#!/bin/sh
+spotifyStatus="$(playerctl --player=spotify,spotifyd status)"
+mpvStatus="$(playerctl --player=mpv status)"
+status="$(playerctl status)"
+if [[ "$spotifyStatus" = 'Playing' ]]; then
+    echo "spotify playing"
+elif [[ "$mpvStatus" = 'Playing' ]]; then
+    echo "mpv playing"
+elif [[ "$status" = 'Playing' ]]; then
+    echo "any playing"
+elif [[ "$spotifyStatus" = 'Paused' ]]; then
+    echo "spotify paused"
+elif [[ "$mpvStatus" = 'Paused' ]]; then
+    echo "mpv paused"
+elif [[ "$status" = 'Paused' ]]; then
+    echo "any paused"
+else
+    echo "no players"
+    exit 1
+fi

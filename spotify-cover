@@ -1,0 +1,7 @@
+#!/usr/bin/zsh
+feh_pid=$(pgrep -f 'feh https://i.scdn.co/image/*')
+if [[ ! -z $feh_pid ]]; then
+    kill -9 $feh_pid
+else
+    sp feh
+fi

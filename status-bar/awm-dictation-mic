@@ -1,0 +1,5 @@
+#!/bin/sh 
+
+status=$(pgrep -f 'nerd-dictation begin')
+
+[[ "$status" ]] && printf "  " || printf ""

@@ -1,0 +1,3 @@
+#!/bin/sh
+[ $(pamixer --get-mute) = true ] && exit 0
+pamixer --allow-boost -d 5

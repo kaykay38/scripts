@@ -1,0 +1,12 @@
+#!/bin/bash
+echo "<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Automatic redirect to $1</title>
+    <meta http-equiv=\"refresh\" content=\"0; url=$1\" />
+  </head>
+  <body>
+    <h1>For older browsers, click Redirect</h1>
+    <p><a href=\"$1\">Redirect</a></p>
+  </body>
+</html>" > "$2"

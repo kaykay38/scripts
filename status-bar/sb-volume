@@ -1,0 +1,35 @@
+#!/bin/sh
+
+# Prints the current volume or 🔇 if muted.
+
+case $BLOCK_BUTTON in
+	1) setsid -f "$TERMINAL" -e pulsemixer ;;
+	2) pamixer -t ;;
+	4) pamixer --allow-boost -i 1 ;;
+	5) pamixer --allow-boost -d 1 ;;
+	3) notify-send  --hint=string:x-dunst-stack-tag:test "Volume" "\- Shows volume 🔊, ﱝ if muted.
+    - Middle click to mute.
+    - Scroll to change." ;;
+    # 3) notify-send --hint=string:x-dunst-stack-tag:test "Volume $vol%
+    # - Middle click to mute.
+    # - Scroll to change." ;;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+[ $(pamixer --get-mute) = true ] && echo ﱝ && exit
+
+vol="$(pamixer --get-volume)"
+if [ "$vol" -gt "100" ]; then
+	icon=" "
+    vol="100"
+elif [ "$vol" == "0" ]; then
+    icon=""
+elif [ "$vol" -gt "70" ]; then
+	icon=" "
+elif [ "$vol" -gt "25" ]; then
+	icon="墳"
+else
+	icon=""
+fi
+echo "$icon $vol%"
+notify-send --hint=string:x-dunst-stack-tag:test "Volume $vol%"

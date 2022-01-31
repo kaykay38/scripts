@@ -1,0 +1,56 @@
+#!/bin/sh -x
+
+# Displays todays precipication chance () and daily low (↓) and high (↑).
+# Usually intended for the statusbar.
+
+# If we have internet, get a weather report from wttr.in and store it locally.
+# You could set up a shell alias to view the full file in a pager in the
+# terminal if desired. This function will only be run once a day when needed.
+URL="https://weather.com/weather/today/l/Spokane+WA?canonicalCityId=784528c5dca98e8cd5ea2ce0c075e263b2c1b9d2f03d3942f5cad896e2276751"
+# URL="https://weather.com/weather/today/l/Yiyang+Hunan+People's+Republic+of+China?canonicalCityId=16b78b9b149926cc900bf1223facc04541611a1caf58b1169bd54b9ce3008c41"
+LOCATION=""
+[ ! -z "$1" ] && LOCATION="$1"
+[ ! -z "$2" ] && URL="$2"
+weatherreport="${XDG_DATA_HOME:-$HOME/.local/share}/weather/todayweather$LOCATION"
+barstatus="${XDG_DATA_HOME:-$HOME/.local/share}/weather/sb-status"
+
+getforecast() { curl -sf "$URL" > "$weatherreport" || exit 1 ;}
+
+# Some very particular and terse stream manipulation. We get the maximum
+# precipitation chance and the daily high and low from the downloaded file and
+# display them with coresponding emojis.
+printweather() {
+    results="$(rg -NoP '(Morning|Afternoon|Evening|Overnight).*Chance of Rain</span>\K((--)|(\d+%))|<span data-testid="TemperatureValue" class="CurrentConditions--tempValue--.....">\K((--)|(\d+°))</span>|<div data-testid="wxPhrase" class="CurrentConditions--phraseValue--.....">\K[A-Z][a-z]* *[A-Z]*[a-z]* *[A-Z]*[a-z]* *[A-Z]*[a-z]* *[A-Z]*[a-z]* *[A-Z]*[a-z]*/*[A-Z]*[a-z]*</div>|<div class="CurrentConditions--tempHiLoValue--.{5}"><span data-testid="TemperatureValue">\K((--)|(\d+°))</span>/<span data-testid="TemperatureValue">((--)|(\d+°))' "$weatherreport" | sed 's#</span>/<span data-testid="TemperatureValue"># #;s#</span>##;s#</div>##')"
+    # results="$(rg -NoP '(Morning|Afternoon|Evening|Overnight).*Chance of Rain</span>\K((--)|(\d+%))|<span data-testid="TemperatureValue" class="CurrentConditions--tempValue--.....">\K((--)|(\d+°))</span>|<div data-testid="wxPhrase" class="CurrentConditions--phraseValue--.....">\K.*?(?= </div>)|<div class="CurrentConditions--tempHiLoValue--.{5}"><span data-testid="TemperatureValue">\K((--)|(\d+°))</span>/<span data-testid="TemperatureValue">((--)|(\d+°))' "$weatherreport" | sed 's#</span>/<span data-testid="TemperatureValue"># #;s#</span>##;s#</div>##')"
+    curTemp="$(sed -n 1p <<< $results)"
+    curCond="$(sed -n 2p <<< $results)"
+    chanceRain="$(sed -n '4,7p' <<< $results | awk -F "%" 'max<$1 || NR==1{ max=$1; } END{ print " "max"%" }')"
+    hiLoTemp="$(sed -n 3p <<< $results | awk '{print ""$1 ,""$2}')"
+    echo " $curTemp $curCond  $chanceRain $hiLoTemp" > "$barstatus"
+}
+
+showweather() {
+    cat $barstatus
+}
+
+case $BLOCK_BUTTON in
+	1) setsid -f "$TERMINAL" -e less -Srf "$weatherreport" ;;
+	2) getforecast && showweather ;;
+	3) notify-send " Weather module" "\- Left click for full forecast.
+- Middle click to update forecast.
+: Chance of rain/snow
+↓: Daily low
+↑: Daily high" ;;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+# The test if our forcecast is updated every 10 minutes. If it isn't, download a new
+# weather report from weather.com with the above function.
+filetime=$(stat -c %y "$barstatus" 2>/dev/null | cut -d':' -f1,2)
+curTime="$(date +'%H:%M %Y-%m-%d')"
+if [[ "$filetime" > "$(date -d"$curTime -10 minutes" +'%Y-%m-%d %H:%M')" ]] ; then
+    showweather
+else
+    getforecast && printweather && showweather
+
+fi

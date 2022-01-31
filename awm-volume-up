@@ -1,0 +1,4 @@
+#!/bin/sh
+[ $(pamixer --get-mute) = true ] && exit 0
+vol="$(pamixer --get-volume)"
+[ "$vol" -le "95" ] && pamixer --allow-boost -i 5

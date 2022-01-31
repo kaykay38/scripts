@@ -1,0 +1,4 @@
+#!/bin/sh
+pamixer -t
+[ $(pamixer --get-mute) = true ] && notify-send --hint=string:x-dunst-stack-tag:test "$(pamixer --get-default-sink | sed 1d | cut -d'"' -f 4)" "Volume Muted" && exit 0
+notify-send --hint=string:x-dunst-stack-tag:test "$(pamixer --get-default-sink | sed 1d | cut -d'"' -f 4)" "Volume $(pamixer --get-volume)%"

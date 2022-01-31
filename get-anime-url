@@ -1,0 +1,23 @@
+#!/bin/bash -x
+anime_id="mars-red"
+ep_max="11"
+ep_no=1
+
+while [[ $i -le $ep_max ]]
+    do
+	dpage_url=$(
+	curl -s "https://gogoanime.vc/$anime_id-episode-$ep_no" |
+	sed -n -E '
+		/^[[:space:]]*<li class="dowloads">/{
+		s/.*href="([^"]*)".*/\1/p
+		q
+		}')
+
+	curl -s "$dpage_url" |
+	sed -n -E '
+		/^[[:space:]]*href="([^"]*\.mp4)".*/{
+		s/^[[:space:]]*href="([^"]*\.mp4)".*/\1/p
+		q
+		}
+		'
+done

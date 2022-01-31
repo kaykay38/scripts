@@ -1,0 +1,3 @@
+#!/bin/bash
+
+[[ ! "$(pgrep -f 'alacritty --title DWM Key Bindings -e bat')" ]] && alacritty --title 'DWM Key Bindings' -e bat --wrap=never --file-name 'DWM Key Bindings' $HOME/Suckless/dwm/keybindings.txt

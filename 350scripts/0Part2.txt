@@ -1,0 +1,89 @@
+Deliverable
+You need to produce one document with all your tests. Tests are stated in the form of requirements. Unless otherwise specified, you may satisfy each however you want. Each must address the following in exactly this form, including the number, in a separate section:
+The test designator and title in bold; e.g., Test B.1: Power network
+1. The rationale behind the test; i.e., what is it testing and why we care.
+2. A general English description of the initial conditions of the test.
+3. The commands for (2), which must appear in a standalone form that could be directly copied into a text file to reproduce the test without manual intervention. Do not crossreference other tests.
+4. A brief English narrative of the expected results of executing the test. (Proper testing discipline demands that you do this before running the test.)
+5. At least one graphical representation of the actual results. The form is your choice. See the log output.
+6. A brief discussion on how the actual results differ from the expected results.
+7. A suggestion for how to extend this test to cover related aspects not required here.
+Your document must be formatted professionally. It must be consistent in all respects across all team members. Code references must be in monospaced font.
+Tests
+Each test is independent. Not all tests may work as expected.
+
+A. Track Tests
+
+Test A.1: Oval layout
+    Build an oval track.
+
+Test A.2: Oval layout with passing loop
+    Build an oval track with a passing loop.
+
+Test A.3: Oval layout with dead-end siding
+    Build an oval track with a dead-end siding.
+
+Test A.4: Oval layout with roundhouse siding
+    Build an oval track with a roundhouse siding that has three engine houses.
+
+B. Infrastructure Tests
+Test B.1: Power network
+    Create a power network with one power station connected to two substations, the second of which supplies a catenary of at least four poles.
+
+Test B.2: Semaphore
+    Demonstrate that the stop, caution, and proceed states of a semaphore work. This is testing only the change of state of the semaphore, not a train’s response to it.
+
+Test B.3: Signal light
+    Demonstrate that the stop and proceed states of a signal light work. This is testing only the change of state of the signal light, not a train’s response to it.
+
+C. Stock Tests
+
+Test C.1: Speed validation
+    Accelerate a diesel train up to 60 kph, reduce its speed to 30 kph, then brake.
+
+Test C.2: Collision 1
+    Force two trains to collide head-on. Make it cool.
+
+Test C.3: Collision 2
+    Force a train to collide with another from behind.
+
+Test C.4: Derailment 1
+    Show that a train cannot enter a switch that is out of position.
+
+Test C.5: Derailment 2
+    Derail a train that is partially over a switch.
+
+Test C.6: Derailment 3
+    Derail a train by running it off an open drawbridge.
+
+Test C.7: Direction changing 1
+    Bring a train running at 20 kph to a stop, then reverse its direction to 30 kph.
+
+Test C.8: Direction changing 2
+    Reverse a train running at 20 kph without stopping it.
+
+Test C.9: Uncoupling 1
+    Bring a train running at 20 kph to a stop, then uncouple it. Use one of each car type.
+
+Test C.10: Uncoupling 2
+    Uncouple a train running at 20 kph without stopping it. Use one of each car type.
+
+Test C.11: Power loss.
+    Demonstrate that an electric engine must be on a track segment with a catenary.
+
+Test C.12: Roundhouse origination
+    Start an engine in the roundhouse in A.4 and bring it into operation on the oval.
+
+Test C.13: Passing operations 1
+    Run two trains of six cars each on A.2 in opposite directions without colliding.
+
+Test C.14: Passing operations 2
+    Run two trains of six cars each on A.3 in opposite directions without colliding.
+
+D. View Tests
+
+Test D.1: Orient to north
+    Show that a layout is oriented north with respect to an engine.
+
+Test D.2: Orient to track
+    Show that a layout is oriented forward with respect to an engine.

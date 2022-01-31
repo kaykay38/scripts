@@ -1,0 +1,115 @@
+#!/bin/sh
+
+declare startDir=$1
+declare imgDir=$2
+declare vidDir=$3
+declare -i dirCount=0
+declare -i fileCount=0
+
+renameMoveFile() 
+{
+    declare file=$1
+    declare startDir=$2
+    declare imgDir=$3
+    declare vidDir=$4
+    declare fileCount=$5
+    declare dir=$6
+    echo -e "\nFile #$fileCount in $dir"
+    declare baseName=$(basename $file)
+ #   echo -e "baseName=$baseName"
+    declare name="${baseName%%.*}"
+ #   echo -e "name=$name"
+    declare ext=""
+    if grep -q '.' <<< $baseName; then
+        ext="${baseName##*.}"
+    fi
+ #   echo -e "ext=$ext"
+ #   echo -e "info=$info"
+    echo -e "File Name: $baseName\nExtension: $ext"
+    if [ -z "$ext" ] || ([ "$ext" != 'jpeg' ] && [ "$ext" != 'jpg' ] && [ "$ext" != 'gif' ] && [ "$ext" != 'png' ] && [ "$ext" != 'mov' ] && [ "$ext" != 'zip' ] && [ "$ext" != 'txt' ] && [ "$ext" != 'pdf' ]); then
+        declare mime=$(file -b $file)
+        declare info=$mime
+        set -- $info
+        declare extUp=$1 
+      #  echo -e "extUp=$extUp"
+        ext=$(echo -e $extUp | tr '[:upper:]' '[:lower:]')
+      #  echo -e "File ext empty or invalid, changed to lowercase from \"file -b\" command\next=$ext"
+    
+        if [ "$ext" != 'jpeg' ] && [ "$ext" != 'jpg' ] && [ "$ext" != 'gif' ] && [ "$ext" != 'png' ] && [ "$ext" != 'heif' ] && [ "$ext" != 'iso' ]; then
+            echo -e "This is NOT an image file."
+            mv "$file" "$startDir/$name.$ext" && echo -e "Renamed $baseName to $name.$ext"
+        elif [ "$ext" = 'jpeg' ] || [ "$ext" = 'jpg' ] || [ "$ext" = 'gif' ] || [ "$ext" = 'png' ] || [ "$ext" = 'heif' ]; then
+            echo -e "This is an image file."
+            mv "$file" "$imgDir/$name.$ext" && echo -e "Moved to $imgDir and Renamed $baseName to $name.$ext"
+        elif [ "$ext" = 'iso' ]; then
+            if grep -q '.MOV' <<< $info; then
+                ext="mov"
+                echo -e "This is a video file.\nFile Info: $info\nChanged ISO to mov"
+                echo -e "New Extension: $ext"
+                mv "$file" "$vidDir/$name.$ext" && echo -e "Moved to $vidDir and Renamed $baseName to $name.$ext"
+            elif grep -q 'HEIF' <<< $info; then
+                ext="heif"
+                echo -e "This is an image file\nFile Info: $info\nChanged ISO to heif"
+                echo -e "New Extension: $ext"
+                mv "$file" "$imgDir/$name.$ext" && echo -e "Moved to $imgDir and Renamed $baseName to $name.$ext"
+            elif grep -q 'MP4' <<< $info; then
+                ext="mp4"
+                echo -e "This is a video file\nFile Info: $info\nChanged ISO to heif"
+                echo -e "New Extension: $ext"
+                mv "$file" "$vidDir/$name.$ext" && echo -e "Moved to $imgDir and Renamed $baseName to $name.$ext"
+            else
+                echo -e "This is an ISO file.\n$File Info: $info"
+                mv "$file" "$startDir/$name.$ext" && echo -e "Renamed $baseName to $name.$ext"
+           fi
+        else
+            echo -e "File Info: $info"
+            echo -e "File type unknown."
+        fi
+    else
+        if [ "$ext" = 'jpg' ] || [ "$ext" = 'jpep' ] || [ "$ext" = 'png' ] || [ "$ext" = 'gif' ] || [ "$ext" = 'heif' ]; then
+            echo -e "This is an image file."
+            mv "$file" "$imgDir" && echo -e "Moved to $imgDir"
+        elif [ "$ext" = 'mov' ] || [ "$ext" = 'mp4' ]; then
+            echo -e "This is a video file."
+            mv "$file" "$vidDir" && echo -e "Moved to $vidDir"
+        else
+            echo -e "File extension is valid. Does not need to be renamed."
+        fi
+    fi
+}
+
+echo -e "\nThis script renames files by detecting file format with \"file -b\" command and moves image/video files to specified directory path."
+if [ -z "$startDir" ]; then
+    echo -e "\nEnter a path you would like to search for image/video files. (i.e \"~/documents/trips\")\n"
+    read -p "Directory/File Path: " $startDir
+fi
+if [ -z "$imgDir" ]; then
+    echo -e "\nTo what path do you want to move found IMAGES?\nIf you wish to keep the images in the same path, press ENTER to continue...\n"
+    read -p "Directory/File Path: " $imgDir
+    if [ "$imgDir" = '' ]; then
+        imgDir=$startDir
+    fi
+fi
+if [ -z "$vidDir" ]; then
+    echo -e "\nTo what path do you want to move found VIDEOS?\nIf you wish to keep the VIDEOS in the same path, press ENTER to continue...\n"
+    read -p "Directory/File Path: " $vidDir
+    if [ "$vidDir" = '' ]; then
+        vidDir=$startDir
+    fi
+fi
+for dir in $startDir/*
+do
+    dirCount+=1
+    if [ -d "$dir" ]; then
+        echo -e "\nEntering $dir\nDir #$dirCount"
+        echo -e "\"$dir\" is a directory."
+        fileCount=0
+        for file in $dir/*
+        do
+            fileCount+=1
+            renameMoveFile "$file" "$startDir" "$imgDir" "$vidDir" "$fileCount" "$dir"
+        done
+    else
+        renameMoveFile "$dir" "$startDir" "$imgDir" "$vidDir" "$dirCount" "$startDir"
+    fi
+done

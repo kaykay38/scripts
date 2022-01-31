@@ -1,0 +1,7 @@
+#!/bin/sh
+# requires ghostscript
+# $1 = original pdf
+# $2 = index output pdf
+# $3 = index.info file
+# example index.info
+gs -sDEVICE=pdfwrite -q -dBATCH -dNOPAUSE -sOutputFile=$2 $3 -f $1

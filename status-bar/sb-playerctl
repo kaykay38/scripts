@@ -1,0 +1,33 @@
+#!/bin/sh
+case $BLOCK_BUTTON in
+	1) setsid -f playerctl --player=spotify,mpv,%any play-pause ;;
+	3) setsid -f playerctl-info ;;
+	4) setsid -f playerctl --player=spotify,mpv,%any next ;;
+	5) playerctl --player=spotify,mpv,%any previous ;;
+esac
+spotifyStatus="$(playerctl --player=spotify,spotifyd status)"
+mpvStatus="$(playerctl --player=mpv status)"
+status="$(playerctl status)"
+if [[ "$spotifyStatus" = 'Playing' ]]; then
+	playerctl --player=spotify metadata --format "    {{ trunc(artist,25) }} - {{ trunc(title,40) }} "
+elif [[ "$mpvStatus" = 'Playing' ]]; then
+    info="$(playerctl --player=mpv metadata --format " mpv  {{ trunc(artist,25) }} - {{ trunc(title,40) }} ")"
+    pattern="^ mpv   - .*"
+    if [[ $info =~ $pattern ]]; then echo " mpv  ${info:10}"; else echo "$info"; fi
+elif [[ "$status" = 'Playing' ]]; then
+    info="$(playerctl metadata --format "  {{ trunc(artist,25) }} - {{ trunc(title,40) }} ")"
+    pattern="^   - .*"
+    if [[ $info =~ $pattern ]]; then echo "  ${info:6}"; else echo "$info"; fi
+elif [[ "$spotifyStatus" = 'Paused' ]]; then
+    playerctl --player=spotify metadata --format "    {{ trunc(artist,25) }} - {{ trunc(title,40) }} "
+elif [[ "$mpvStatus" = 'Paused' ]]; then
+    info="$(playerctl --player=mpv metadata --format " mpv  {{ trunc(artist,25) }} - {{ trunc(title,40) }} ")"
+    pattern="^ mpv   - .*"
+    if [[ $info =~ $pattern ]]; then echo " mpv  ${info:10}"; else echo "$info"; fi
+elif [[ "$status" = 'Paused' ]]; then
+    info="$(playerctl metadata --format "  {{ trunc(artist,25) }} - {{ trunc(title,40) }} ")"
+    pattern="^   - .*"
+    if [[ $info =~ $pattern ]]; then echo "  ${info:6}"; else echo "$info"; fi
+else
+    exit 1
+fi
