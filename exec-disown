@@ -1,0 +1,4 @@
+prog="$1"
+[[ $(uname) = Darwin ]] && [[ $prog = zathura ]] && prog=/Applications/Zathura.app/Contents/MacOS/zathura
+
+"$prog" "$2" </dev/null &>/dev/null
