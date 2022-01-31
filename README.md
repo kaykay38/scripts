@@ -1,5 +1,7 @@
 # Scripts
-These are my personal and Luke Smith's scripts
+
+These are my personal and Luke Smith's scripts.
+
 I have edited some of Luke Smith's scripts. Authorship is not yet clearly denoted.
 
 ## TODO
