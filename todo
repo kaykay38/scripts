@@ -40,7 +40,7 @@ INFO_MSG="todo 1.2 (June 30, 2021)\n" +\
 "Running `todo` will display today's todo items.\n"
 
 OS = sys.platform
-TODO_DIR=os.environ['TODODIR']
+TODO_DIR=os.environ['TODODIR']+"/"
 # print("ONEDRIVE_DIR", ONEDRIVE_DIR)
 if not TODO_DIR:
     ONEDRIVE_DIR=os.environ['ONEDRIVE']
@@ -63,13 +63,13 @@ def this_weekday(d, weekday):
     return (d + datetime.timedelta(days_ahead)).strftime("%m/%d")
 
 def get_filepath_from_arg(arg):
+    file_path=""
     if arg == "prev" or arg == "previous":
         with open(prev_file_path) as prev_file:
             return TODO_DIR+prev_file.readline().strip()
     elif arg == "t" or arg == "today":
         return todo_file_path
     elif re.match("\d*/\d*",arg):
-        file_path=""
         # print("Matched date format")
         if re.match("\d\d/\d/\d\d\d\d$",arg):
             args = arg.split("/")
@@ -137,7 +137,7 @@ def get_filepath_from_arg(arg):
             # date="("+lines[0].strip()+")"
             # return (file_path, date)
             return file_path
-    print("No TODO file exists for '"+arg+"'")
+    print("No TODO file exists for " + arg + ", please create", file_path)
     sys.exit(1)
 
 def print_todolist(file_path):
@@ -272,11 +272,6 @@ def main(argv):
                 # print("todo_file_path", file_path)
                 os.system("cd \""+TODO_DIR+"\" && $EDITOR \""+file_path+"\"")
             sys.exit()
-        # elif opt == '-t':
-        #     if OS == "linux" or OS == "darwin":
-        #         # print("todo_file_path", file_path)
-        #         os.system("cd \""+TODO_DIR+"\" && $EDITOR \""+todo_file_path+"\"")
-        #     sys.exit()
         elif opt in ('-h','--help'):
             print (USAGE_MSG)
             sys.exit()
