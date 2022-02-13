@@ -8,7 +8,7 @@ IFS=' '
 # done
 DATE_LEN="${#DATE[@]}"
 OS="$(uname)"
-TODO_DIR="$ONEDRIVE/TODO"
+TODO_DIR="$TODODIR"
 if [[ "$DATE_LEN" -eq 3 ]]; then
     # printf '"$DATE_LEN" -eq 3\n'
     mon="${DATE[0]}"
