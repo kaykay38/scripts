@@ -11,8 +11,8 @@ bgloc="${XDG_DATA_HOME:-$HOME}/.config/xwallpaper/wallpaper"
 
 trueloc="$(readlink -f "$1")" &&
 case "$(file --mime-type -b "$trueloc")" in
-	image/* ) ln -sf "$(readlink -f "$1")" "$bgloc" ;;
-	inode/directory ) ln -sf "$(find "$trueloc" -iregex '.*.\(jpg\|jpeg\|png\|gif\)' -type f | shuf -n 1)" "$bgloc" && notify-send "Choosing random wallpaper" ;;
+	image/* ) cp -sf "$(readlink -f "$1")" "$bgloc" ;;
+	inode/directory ) cp -sf "$(find "$trueloc" -iregex '.*.\(jpg\|jpeg\|png\|gif\)' -type f | shuf -n 1)" "$bgloc" && notify-send "Choosing random wallpaper" ;;
 	*) notify-send "Error" "Not a valid image" ; exit 1;;
 esac
 
