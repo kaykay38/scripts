@@ -1,3 +1,7 @@
+#############################################################
+# @author Mia Hunt
+# @github kaykay38
+#############################################################
 #!/usr/bin/zsh
 feh_pid=$(pgrep -f 'feh https://i.scdn.co/image/*')
 if [[ ! -z $feh_pid ]]; then

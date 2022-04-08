@@ -1,3 +1,6 @@
+#############################################################
+# @author Luke Smith
+#############################################################
 #!/bin/sh
 
 # When I open an image from the file manager in sxiv (the image viewer), I want

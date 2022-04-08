@@ -1,3 +1,6 @@
+#############################################################
+# @author Luke Smith
+#############################################################
 #!/bin/sh
 # Gives a dmenu prompt to mount unmounted local NAS shares for read/write.
 # Requirements - "%wheel ALL=(ALL) NOPASSWD: ALL"

@@ -5,7 +5,8 @@
 # Depends: systemd, onedrive
 #
 #
-# @author kaykay38
+# @author Mia Hunt
+# @github kaykay38
 # @copyright 2021 kaykay38
 #---------------------------------------------------------------------------
 case $BLOCK_BUTTON in

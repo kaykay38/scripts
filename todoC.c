@@ -1,3 +1,7 @@
+/**                                                             
+* @author Mia Hunt
+* @github kaykay38
+*/
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>

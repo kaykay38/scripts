@@ -1,3 +1,6 @@
+#############################################################
+# @author Luke Smith
+#############################################################
 #!/bin/sh
 
 # Open a terminal window in the same directory as the currently active window.

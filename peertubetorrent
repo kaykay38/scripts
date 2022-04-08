@@ -1,3 +1,6 @@
+#############################################################
+# @author Luke Smith
+#############################################################
 #!/bin/sh
 # torrent peertube videos, requires the transadd script
 # first argument is the video link, second is the quality (480 or 1080)

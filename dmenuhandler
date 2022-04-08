@@ -1,3 +1,6 @@
+#############################################################
+# @author Luke Smith, Mia Hunt @github kaykay38
+#############################################################
 #!/bin/sh
 
 # Feed this script a link and it will give dmenu

@@ -1,3 +1,6 @@
+#############################################################
+# @author Luke Smith
+#############################################################
 #!/bin/sh
 
 # If transmission-daemon is running, will ask to kill, else will ask to start.

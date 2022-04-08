@@ -1,3 +1,7 @@
+#############################################################
+# @author Mia Hunt
+# @github kaykay38
+#############################################################
 #!/bin/bash
 # vertMonitorStatus="$(xrandr | grep 'connected\s*.*\s*1080x1920')"
 # main2kMonitorStatus="$(xrandr | grep 'connected\s*.*\s*2560x1440')"

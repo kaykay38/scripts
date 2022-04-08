@@ -1,6 +1,10 @@
+#############################################################
+# @author Mia Hunt
+# @github kaykay38
+#############################################################
 #!/bin/sh
 filename="$(basename $(pwd))"
 [[ ! -z "$1" ]] && filename="$1"
-cp $HOME/OneDrive/Templates/Latex/Makefile ./ && echo "Copied ~/OneDrive/Templates/Latex/Makefile"
-cp $HOME/OneDrive/Templates/Latex/new.tex "./$filename.tex" && echo "Copied ~/OneDrive/Templates/Latex/new.tex -> $filename.tex"
+cp $SYNCDRIVE/Templates/Latex/Makefile ./ && echo "Copied $SYNCDRIVE/Templates/Latex/Makefile"
+cp $SYNCDRIVE/Templates/Latex/new.tex "./$filename.tex" && echo "Copied $SYNCDRIVE/Templates/Latex/new.tex -> $filename.tex"
 sed -i -E "1 s/(filename=)/\1$filename/" ./Makefile

@@ -1,3 +1,6 @@
+#############################################################
+# @author Luke Smith
+#############################################################
 #!/bin/sh
 
 # opout: "open output": A general handler for opening a file's intended output,

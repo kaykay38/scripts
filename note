@@ -1,5 +1,9 @@
+#############################################################
+# @author Mia Hunt
+# @github kaykay38
+#############################################################
 #!/bin/sh
-quarterDir="$HOME/OneDrive/2020-21Q2Winter"
+quarterDir="$SYNCDIR/2021-22Q3Spring"
 class="$1"
 topic="$2"
 fileName="Notes/$(date "+%Y-%m-%d_%a").md"
@@ -8,25 +12,21 @@ classHeader=""
 [[ -z "$class" ]] && class="$(basename "$(pwd)")"
 
 case "$class" in
-    cs320|CSCD320-Algorithms)
-        cd "$quarterDir/CSCD320-Algorithms"
-        classHeader="CSCD320 Algorithms"
+    cs467|CSCD467-ParallelCloudComputing)
+        cd "$quarterDir/CSCD467-ParallelCloudComputing"
+        classHeader="CSCD467 Parallel & Cloud Computing"
     ;;
-    cs378|CSCD378-WebDev)
-        cd "$quarterDir/CSCD378-WebDev"
-        classHeader="CSCD378 Web Dev"
+    cs490|CSCD490-SeniorCapstone)
+        cd "$quarterDir/CSCD490-SeniorCapstone"
+        classHeader="CSCD490 Senior Capstone"
     ;;
-    cs488|CSCD488-SeniorProject)
-        cd "$quarterDir/CSCD488-SeniorProject"
-        classHeader="CSCD488 Senior Project"
-    ;;
-    cs496|CSCD496-MachineLearning)
-        cd "$quarterDir/CSCD496-MachineLearning"
-        classHeader="CSCD496 Machine Learning"
+    cs202|CSCD202-ComputingEthics)
+        cd "$quarterDir/CSCD202-ComputingEthics"
+        classHeader="CSCD202 Computing Ethics"
     ;;
 esac
 
-[[ ! -d 'Notes' ]] && mkdir -p Notes
+[[ ! -d 'Notes' ]] && mkdir Notes
 
 if [[ ! -f "$fileName" ]]; then
     note="$(date "+%a %b %d, %Y<br>")\n"$class"<br>\n## $topic\n"

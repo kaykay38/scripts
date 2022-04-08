@@ -1,3 +1,14 @@
+#---------------------------------------------------------------------------
+# VPN Status Script
+#
+# Depends: grep
+#
+#
+# @author Mia Hunt
+# @github kaykay38
+# @copyright 2021 kaykay38
+#---------------------------------------------------------------------------
+
 #!/bin/sh
 if [[ ! -z "$(ip a | grep 'tun0' | grep 'inet')" ]]; then
 	echo "  ﱾ  Connected  |"

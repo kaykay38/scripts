@@ -1,3 +1,7 @@
+#############################################################
+# @author Mia Hunt
+# @github kaykay38
+#############################################################
 #!/bin/sh
 journalctl --user-unit onedrive -n 50 | sed 's#ArchAMDpc .*\[.*\]:#| #'| bat --paging=always --wrap=never --file-name "OneDrive Log"
 # journalctl --user-unit onedrive -n 50 | bat --paging=always --wrap=never --file-name "OneDrive Log"

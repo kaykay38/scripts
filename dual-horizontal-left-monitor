@@ -1,3 +1,7 @@
+#############################################################
+# @author Mia Hunt
+# @github kaykay38
+#############################################################
 #!/bin/bash
 left1080Monitor="$(xrandr 2>/dev/null | grep 'DP-0 connected')"
 main2kMonitor="$(xrandr 2>/dev/null | grep 'DP-2.8 connected')"

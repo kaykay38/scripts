@@ -1,3 +1,7 @@
+#############################################################
+# @author Mia Hunt
+# @github kaykay38
+#############################################################
 #!/bin/sh
 [ $(pamixer --get-mute) = true ] && notify-send --hint=string:x-dunst-stack-tag:test "Volume Muted" && exit
 

@@ -1,3 +1,8 @@
+#############################################################
+# @author Mia Hunt
+# @github kaykay38
+#############################################################
+#!/bin/sh
 prog="$1"
 [[ $(uname) = Darwin ]] && [[ $prog = zathura ]] && prog=/Applications/Zathura.app/Contents/MacOS/zathura
 

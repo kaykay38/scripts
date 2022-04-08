@@ -1,3 +1,6 @@
+#############################################################
+# @author Luke Smith
+#############################################################
 #!/bin/sh
 # Using external pipe with st, give a dmenu prompt of recent commands,
 # allowing the user to copy the output of one.

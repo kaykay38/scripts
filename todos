@@ -1,3 +1,7 @@
+#############################################################
+# @author Mia Hunt
+# @github kaykay38
+#############################################################
 #!/bin/bash
 IFS='/'     # space is set as delimiter
 read -ra DATE <<< "$1"   # str is read into an array as tokens separated by IFS

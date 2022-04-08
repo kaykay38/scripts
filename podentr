@@ -1,3 +1,6 @@
+#############################################################
+# @author Luke Smith
+#############################################################
 #!/bin/sh
 
 # entr command to run `queueandnotify` when newsboat queue is changed

@@ -1,3 +1,6 @@
+#############################################################
+# @author Luke Smith
+#############################################################
 #!/bin/sh
 
 # You might notice all mpv commands are aliased to have this input-ipc-server

@@ -1,3 +1,7 @@
+#############################################################
+# @author Mia Hunt
+# @github kaykay38
+#############################################################
 #!/bin/bash -x
 urlRegex="^https://.*"
 media="$(echo -e "Music\nVideos\nPodcasts"| dmenu -c -h 40 -l 3 -p "Playlists")"

@@ -1,3 +1,6 @@
+#############################################################
+# @author Luke Smith
+#############################################################
 #!/bin/sh
 
 # Mimeapp script for adding torrent to transmission-daemon, but will also start the daemon first if not running.

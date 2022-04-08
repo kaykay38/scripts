@@ -1,3 +1,6 @@
+#############################################################
+# @author Luke Smith
+#############################################################
 #!/bin/sh
 
 # A UI for detecting and selecting all displays. Probes xrandr for connected

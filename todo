@@ -218,20 +218,21 @@ if not os.path.exists(todo_filepath):
         "|----------|-------------|-------------|-------------|-------------|-------------|-------------|-------------|\n"+\
 		"| 07:00 AM |             |             |             |             |             |             |             |\n"+\
 		"| 08:00 AM |             |             |             |             |             |             |             |\n"+\
-		"| 09:00 AM |             |             |             |             |             |             |             |\n"+\
-		"| 10:00 AM | CSCD320     | CSCD320     | CSCD320     | CSCD320     | CSCD320     |             |             |\n"+\
-		"| 11:00 AM |             |             |             |             |             |             |             |\n"+\
-		"| 12:00 PM | CSCD469     | CSCD469     | CSCD469     | CSCD469     | CSCD469     |             |             |\n"+\
-		"| 01:00 PM | CSCD378     | CSCD378     | CSCD378     | CSCD378     | CSCD378     |             |             |\n"+\
-		"| 02:00 PM |             |             |             |             |             |             |             |\n"+\
-		"| 03:00 PM | CSCD488     |             | CSCD488     |             |             |             |             |\n"+\
-		"| 04:00 PM |             |             |             |             | Work @WW    |             |             |\n"+\
-		"| 04:30 PM |             |             |             |             | Work @WW    |             |             |\n"+\
-		"| 05:00 PM |             |             |             |             | Work @WW    |             |             |\n"+\
-		"| 06:00 PM |             |             | Work @WW    |             | Work @WW    |             |             |\n"+\
-		"| 07:00 PM |             |             | Work @WW    |             | Work @WW    |             |             |\n"+\
-		"| 08:00 PM |             |             | Work @WW    |             | Work @WW    |             |             |\n"+\
-		"| 09:00 PM |             |             | Work @WW    |             | Work @WW    |             |             |\n"+\
+		"| 09:00 AM | CSCD467     | CSCD467     | CSCD467     | CSCD467     | CSCD467     |             |             |\n"+\
+		"| 10:00 AM |             |             |             |             |             |             |             |\n"+\
+		"| 11:00 AM | Meet w/Mark | Meet w/Mark | Meet w/Mark | Meet w/Mark | Meet w/Mark |             |             |\n"+\
+		"| 11:15 AM |             |             |             |             |             |             |             |\n"+\
+		"| 12:00 PM | CSCD202     | CSCD202     | CSCD202     | CSCD202     | Work @CA    |             |             |\n"+\
+		"| 01:00 PM |             | Work @CA    |             | Work @CA    | Work @CA    |             |             |\n"+\
+		"| 02:00 PM |             | Work @CA    |             | Work @CA    | Work @CA    |             |             |\n"+\
+		"| 03:00 PM | CSCD490     | Work @CA    | CSCD490     | Work @CA    | Work @CA    |             |             |\n"+\
+		"| 04:00 PM |             | Work @CA    |             | Work @CA    | Work @CA    |             |             |\n"+\
+		"| 04:30 PM |             | Work @CA    |             | Work @CA    | Work @CA    |             |             |\n"+\
+		"| 05:00 PM |             |             |             | Work @CA    | Work @CA    |             |             |\n"+\
+		"| 06:00 PM |             |             |             |             |             |             |             |\n"+\
+		"| 07:00 PM |             |             |             |             |             |             |             |\n"+\
+		"| 08:00 PM |             |             |             |             |             |             |             |\n"+\
+		"| 09:00 PM |             |             |             |             |             |             |             |\n"+\
 		"| 10:00 PM |             |             |             |             |             |             |             |\n"+\
         "\n"+\
         "## TODO\n"+\

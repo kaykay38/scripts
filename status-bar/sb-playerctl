@@ -1,3 +1,13 @@
+#---------------------------------------------------------------------------
+# Playerctl Status Script
+#
+# Depends: playerctl
+#
+#
+# @author Mia Hunt
+# @github kaykay38
+# @copyright 2021 kaykay38
+#---------------------------------------------------------------------------
 #!/bin/sh
 case $BLOCK_BUTTON in
 	1) setsid -f playerctl --player=spotify,mpv,%any play-pause ;;

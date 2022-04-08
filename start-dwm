@@ -1,5 +1,10 @@
+#############################################################
+# @author Mia Hunt
+# @github kaykay38
+#############################################################
+#!/bin/sh
 # Autostart settings
-/home/mia/.config/.system/settings.sh
-/home/mia/.config/.system/dwm-bar.sh
+$HOME/.config/.system/settings.sh
+$HOME/.config/.system/dwm-bar.sh
 # dwmblocks
 exec dwm

@@ -1,3 +1,11 @@
+#---------------------------------------------------------------------------
+# Weather Status Script
+#
+# Depends: rg, curl, sed
+#
+#
+# @author Mia Hunt inspired from Luke Smith
+#---------------------------------------------------------------------------
 #!/bin/sh -x
 
 # Displays todays precipication chance () and daily low (↓) and high (↑).

@@ -1,3 +1,6 @@
+#############################################################
+# @author Luke Smith, Mia Hunt @github kaykay38
+#############################################################
 #!/bin/sh
 
 # Gives a dmenu -b -c prompt to mount unmounted drives and Android phones. If
