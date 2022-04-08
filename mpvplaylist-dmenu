@@ -1,9 +1,9 @@
 #!/bin/bash -x
 urlRegex="^https://.*"
-media="$(echo -e "Music\nVideos\nPodcasts"| dmenu -h 40 -l 3 -p "Playlists")"
+media="$(echo -e "Music\nVideos\nPodcasts"| dmenu -c -h 40 -l 3 -p "Playlists")"
 if [[ $media =~ Music || $media =~ Videos || $media =~ Podcasts ]]; then
     playlistIndex="$HOME/.config/mpvplaylist/$media/.playlists/.playlist.index"
-    playlistName="$(cut -d '"' -f 2 "$playlistIndex" | sort | dmenu -h 40 -l 8 -p "$media Playlists")"
+    playlistName="$(cut -d '"' -f 2 "$playlistIndex" | sort | dmenu -c -h 40 -l 8 -p "$media Playlists")"
 elif [[ -z "$media" ]]; then
     exit 1
 else
@@ -11,10 +11,10 @@ else
 fi
 currentPlaylistFile="$HOME/.config/mpvplaylist/Music/.playlists/.current.playlist"
 add_playlist() {
-    media="$(echo -e "Music\nVideos\nPodcasts"| dmenu -h 40 -l 3 -p "Add New Playlist Type")"
+    media="$(echo -e "Music\nVideos\nPodcasts"| dmenu -c -h 40 -l 3 -p "Add New Playlist Type")"
     if [[ ! -z "$media" ]]; then
         playlistIndex="$HOME/.config/mpvplaylist/$media/.playlists/.playlist.index"
-        newPlaylistInfo="$(dmenu -h 40 -l 1 -p "Add New $media Playlist")"
+        newPlaylistInfo="$(dmenu -c -h 40 -l 1 -p "Add New $media Playlist")"
         if [[ ! -z "$newPlaylistInfo" ]]; then
             newPlaylist="$(echo "$newPlaylistInfo" | cut -d ' ' -f 1)"
             newPlaylistName="$(echo "$newPlaylistInfo" |cut -d '"' -f 2)"
@@ -28,13 +28,13 @@ add_playlist() {
 }
 
 update_playlist() {
-    media="$(echo -e "Music\nVideos\nPodcasts"| dmenu -h 40 -l 3 -p "Update Playlist Type")"
+    media="$(echo -e "Music\nVideos\nPodcasts"| dmenu -c -h 40 -l 3 -p "Update Playlist Type")"
     if [[ ! -z "$media" ]]; then
         playlistIndex="$HOME/.config/mpvplaylist/$media/.playlists/.playlist.index"
-        toUpdatePlaylist="$(cut -d '"' -f 2 "$playlistIndex" | sort | dmenu -h 40 -l 8 -p "Update $media Playlist Name/Location")"
+        toUpdatePlaylist="$(cut -d '"' -f 2 "$playlistIndex" | sort | dmenu -c -h 40 -l 8 -p "Update $media Playlist Name/Location")"
         if [[ ! -z "$toUpdatePlaylist" ]]; then
             toUpdatePlaylistEscaped="$(sed 's/(/\\(/g; s/)/\\)/g; s/\"/\\\"/g;' <<< $toUpdatePlaylist)"
-            updatedPlaylist="$(rg "$toUpdatePlaylistEscaped" "$playlistIndex" | dmenu -h 40 -l 1 -p "Update '$toUpdatePlaylist' Playlist Name/Location")"
+            updatedPlaylist="$(rg "$toUpdatePlaylistEscaped" "$playlistIndex" | dmenu -c -h 40 -l 1 -p "Update '$toUpdatePlaylist' Playlist Name/Location")"
             updatedPlaylistEscaped="$(sed 's#/#\\/#g; s#(#\\(#g; s#)#\\)#g; s#\"#\\\"#g;' <<< $updatedPlaylist)"
             [[ ! -z "$updatedPlaylist" ]] &&
                 sed -i "s/.*\s*\"$toUpdatePlaylist\"\s*$/$updatedPlaylistEscaped/" "$playlistIndex" && notify-send "$media Playlist" "<b>$toUpdatePlaylist</b> successfully updated" || exit 1;
@@ -46,10 +46,10 @@ update_playlist() {
 }
 
 edit_playlist() {
-    media="$(echo -e "Music\nVideos\nPodcasts"| dmenu -h 40 -l 3 -p "Edit Playlist Type")"
+    media="$(echo -e "Music\nVideos\nPodcasts"| dmenu -c -h 40 -l 3 -p "Edit Playlist Type")"
     if [[ ! -z "$media" ]]; then
         playlistIndex="$HOME/.config/mpvplaylist/$media/.playlists/.playlist.index"
-        toEditPlaylist="$(cut -d '"' -f 2 "$playlistIndex" | sort | dmenu -h 40 -l 8 -p "Edit $media Playlist")"
+        toEditPlaylist="$(cut -d '"' -f 2 "$playlistIndex" | sort | dmenu -c -h 40 -l 8 -p "Edit $media Playlist")"
         if [[ ! -z "$toEditPlaylist" ]]; then
             toEditPlaylistEscaped="$(sed 's/(/\\(/g; s/)/\\)/g; s/\"/\\\"/g;' <<< $toEditPlaylist)"
             toEditPlaylistFile="$(rg "$toEditPlaylistEscaped" "$playlistIndex" | cut -d ' ' -f 1)"
@@ -63,10 +63,10 @@ edit_playlist() {
 }
 
 delete_playlist() {
-    media="$(echo -e "Music\nVideos\nPodcasts"| dmenu -h 40 -l 3 -p "Delete Playlist Type")"
+    media="$(echo -e "Music\nVideos\nPodcasts"| dmenu -c -h 40 -l 3 -p "Delete Playlist Type")"
     if [[ ! -z "$media" ]]; then
         playlistIndex="$HOME/.config/mpvplaylist/$media/.playlists/.playlist.index"
-        deletePlaylist="$(cut -d '"' -f 2 "$playlistIndex" | sort | dmenu -h 40 -l 8 -p "Delete $media Playlist")"
+        deletePlaylist="$(cut -d '"' -f 2 "$playlistIndex" | sort | dmenu -c -h 40 -l 8 -p "Delete $media Playlist")"
         if [[ ! -z $deletePlaylist ]]; then sed -i "/\"$deletePlaylist\"/d" "$playlistIndex" && notify-send "$media Playlist" "<b>$deletePlaylist</b> successfully deleted"; else exit 1; fi
     else
         exit 1
@@ -75,15 +75,15 @@ delete_playlist() {
 }
 
 list_playlist() {
-    media="$(echo -e "Music\nVideos\nPodcasts"| dmenu -h 40 -l 3 -p "List Playlist Type")"
+    media="$(echo -e "Music\nVideos\nPodcasts"| dmenu -c -h 40 -l 3 -p "List Playlist Type")"
     if [[ ! -z "$media" ]]; then
         playlistIndex="$HOME/.config/mpvplaylist/$media/.playlists/.playlist.index"
-        toListPlaylist="$(cut -d '"' -f 2 "$playlistIndex" | sort | dmenu -h 40 -l 8 -p "List $media Playlist")"
+        toListPlaylist="$(cut -d '"' -f 2 "$playlistIndex" | sort | dmenu -c -h 40 -l 8 -p "List $media Playlist")"
         if [[ ! -z "$toListPlaylist" ]]; then
             toListPlaylistEscaped="$(sed 's/(/\\(/g; s/)/\\)/g; s/\"/\\\"/g;' <<< $toListPlaylist)"
             toListPlaylistFile="$(rg "$toListPlaylistEscaped" "$playlistIndex" | cut -d ' ' -f 1)"
             [[ ! -z "$toListPlaylistFile" ]] && [[ -f "$toListPlaylistFile" ]] &&
-                dmenu -h 40 -l 8 -p "'$toListPlaylist' Playlist" < "$toListPlaylistFile" || exit 1;
+                dmenu -c -h 40 -l 8 -p "'$toListPlaylist' Playlist" < "$toListPlaylistFile" || exit 1;
         fi
     else
         exit 1
@@ -107,7 +107,7 @@ elif [[ $playlistName =~ ^@e$|edit$ ]]; then
 elif [[ $playlistName =~ ^@l$|list$ ]]; then
     list_playlist
 elif [[ $playlistName =~ ^@c$|current$ ]]; then
-    dmenu -h 40 -l 1 -p "Current playlist" < "$currentPlaylistFile"
+    dmenu -c -h 40 -l 1 -p "Current playlist" < "$currentPlaylistFile"
 fi
 playlist="$(grep "\"$playlistName\"" "$playlistIndex" | cut -d ' ' -f 1)"
 if [[ $playlist =~ $urlRegex ]]; then
