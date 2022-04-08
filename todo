@@ -237,7 +237,14 @@ if not os.path.exists(todo_filepath):
         "## TODO\n"+\
         "---------------------------------------------\n"
         todo_file.write(SCHEDULE)
-        todo_file.write(''.join(get_todolist(prev_todo_filepath)[0]))
+        todolist = get_todolist(prev_todo_filepath)[0]
+        for i in range(len(todolist)):
+            line = todolist[i]
+            if line == todolist[len(todolist)-1]:
+                todolist[i] = "- " + line
+            else:
+                todolist[i] = "- " + line + "\n"
+        todo_file.write(''.join(todolist))
         todo_file.close()
     else:
         # print("else if same week, prev_todo_filepath", prev_todo_filepath)
