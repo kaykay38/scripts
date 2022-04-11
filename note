@@ -1,40 +1,45 @@
+#!/bin/sh
 #############################################################
 # @author Mia Hunt
 # @github kaykay38
 #############################################################
-#!/bin/sh
-quarterDir="$SYNCDIR/2021-22Q3Spring"
+quarter_dir="$SYNCDRIVE/2021-22Q3Spring"
+file_name="$(date '+%Y-%m-%d').md"
+class_header=""
 class="$1"
 topic="$2"
-fileName="Notes/$(date "+%Y-%m-%d_%a").md"
-classHeader=""
+
+
+while getopts ":n:" option; do
+   case $option in
+   n) file_name="$OPTARG.md"
+       class="$3"
+       topic="$4";;
+   esac
+done
 
 [[ -z "$class" ]] && class="$(basename "$(pwd)")"
 
 case "$class" in
-    cs467|CSCD467-ParallelCloudComputing)
-        cd "$quarterDir/CSCD467-ParallelCloudComputing"
-        classHeader="CSCD467 Parallel & Cloud Computing"
+    c467|cs467|CSCD467-ParallelCloudComputing)
+        class_header="\nCSCD467 Parallel & Cloud Computing<br>"
+        cd "$quarter_dir/CSCD467-ParallelCloudComputing"
     ;;
-    cs490|CSCD490-SeniorCapstone)
-        cd "$quarterDir/CSCD490-SeniorCapstone"
-        classHeader="CSCD490 Senior Capstone"
+    c490|cs490|CSCD490-SeniorCapstone)
+        class_header="\nCSCD490 Senior Capstone<br>"
+        cd "$quarter_dir/CSCD490-SeniorCapstone"
     ;;
-    cs202|CSCD202-ComputingEthics)
-        cd "$quarterDir/CSCD202-ComputingEthics"
-        classHeader="CSCD202 Computing Ethics"
+    c202|cs202|CSCD202-ComputingEthics)
+        class_header="\nCSCD202 Computing Ethics<br>"
+        cd "$quarter_dir/CSCD202-ComputingEthics"
     ;;
+    *) topic="$class";;
 esac
 
 [[ ! -d 'Notes' ]] && mkdir Notes
 
-if [[ ! -f "$fileName" ]]; then
-    note="$(date "+%a %b %d, %Y<br>")\n"$class"<br>\n## $topic\n"
-    printf "$note" > "./$fileName"
-fi
+cd Notes
 
-if [[ -z "$EDITOR" ]]; then
-    open "./$fileName" || xdg-open "./$fileName"
-else
-    $EDITOR "./$fileName" 
-fi
+[[ ! -f "$file_name" ]] && printf "Created: $(date '+%a %b %d, %Y %H:%M')\n\nUpdated: \n$class_header\n## $topic\n" > "$file_name" || sed -i "s#Updated:.*#Updated: $(date '+%a %b %d, %Y %H:%M')#" "$file_name"
+
+$EDITOR "$file_name" || open "$file_name" || xdg-open "$file_name"
