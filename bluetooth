@@ -1,8 +1,8 @@
+#!/bin/sh
 #############################################################
 # @author Mia Hunt
 # @github kaykay38
 #############################################################
-#!/bin/sh
 bluetoothStatus="$(systemctl status bluetooth | rg 'Active: active \(running\)')"
 if [[ -z "$bluetoothStatus" ]]; then
    systemctl start bluetooth && blueman-applet && exit 0

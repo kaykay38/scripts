@@ -1,7 +1,7 @@
+#!/bin/sh
 #############################################################
 # @author Brodie Robertson
 #############################################################
-#!/bin/sh
 files=$(dragon-drag-and-drop -t -x)
 
 for file in $files

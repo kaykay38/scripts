@@ -1,7 +1,7 @@
+#!/bin/sh
 #############################################################
 # @author Luke Smith
 #############################################################
-#!/bin/sh
 
 # Module showing network traffic. Shows how much data has been received (RX) or
 # transmitted (TX) since the previous time this script ran. So if run every

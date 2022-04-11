@@ -1,8 +1,8 @@
+#!/bin/bash -x
 #############################################################
 # @author Mia Hunt
 # @github kaykay38
 #############################################################
-#!/bin/bash -x
 xrandr_status="$(xrandr --query)"
 main_2k_monitor_status="$(grep 'DP-2.8 connected' <<< "$xrandr_status")"
 left_1080p_monitor_status="$(grep 'DP-0 connected' <<<  "$xrandr_status")"

@@ -1,8 +1,8 @@
+#!/bin/sh
 #############################################################
 # @author Mia Hunt
 # @github kaykay38
 #############################################################
-#!/bin/sh
 # Autostart settings
 $HOME/.config/.system/settings.sh
 $HOME/.config/.system/dwm-bar.sh

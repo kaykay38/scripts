@@ -1,7 +1,7 @@
+#!/bin/sh
 #############################################################
 # @author Luke Smith
 #############################################################
-#!/bin/sh
 
 # Give a file with images and timecodes and creates a video slideshow of them.
 #

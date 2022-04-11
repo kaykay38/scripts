@@ -1,8 +1,8 @@
+#!/bin/bash
 #############################################################
 # @author Mia Hunt
 # @github kaykay38
 #############################################################
-#!/bin/bash
 status="$(playerctl --player=spotify,mpv,%any status)"
 coverUrl="$(playerctl --player=spotify,mpv,%any metadata --format "{{mpris:artUrl}}")"
 coverUrl="$(echo "${coverUrl/open.spotify.com/i.scdn.co}")"

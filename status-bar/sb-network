@@ -1,7 +1,7 @@
+#!/bin/sh
 #############################################################
 # @author Luke Smith, Mia Hunt @github kaykay38
 #############################################################
-#!/bin/sh
 
 # Show wifi 直 and percent strength or 睊 if none.
 # Show  if connected to ethernet or ✗ if none.

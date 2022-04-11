@@ -1,7 +1,7 @@
+#!/bin/sh
 #############################################################
 # @author Mia Hunt, Luke Smith
 #############################################################
-#!/bin/sh
 
 # Displays todays precipication chance () and daily low (↓) and high (↑).
 # Usually intended for the statusbar.

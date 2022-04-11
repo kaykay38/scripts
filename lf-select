@@ -1,8 +1,8 @@
+#!/bin/sh
 #############################################################
 # @author Gokcehan
 # @github https://github.com/gokcehan/lf
 #############################################################
-#!/bin/sh
 
 # Reads file names from stdin and selects them in lf.
 

@@ -1,8 +1,8 @@
+#!/bin/sh
 #############################################################
 # @author Mia Hunt
 # @github kaykay38
 #############################################################
-#!/bin/sh
 [ $(pamixer --get-mute) = true ] && notify-send --hint=string:x-dunst-stack-tag:test "$(pamixer --get-default-sink | sed 1d | cut -d'"' -f 4)" "Volume Muted" && exit 0
 vol="$(pamixer --get-volume)"
 [ "$vol" -le "95" ] && pamixer --allow-boost -i 5

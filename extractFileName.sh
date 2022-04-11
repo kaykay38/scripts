@@ -1,8 +1,8 @@
+#!/bin/sh
 #############################################################
 # @author Mia Hunt
 # @github kaykay38
 #############################################################
-#!/bin/sh
 
 echo "This script renames files and directories without the extensions.\n"
 declare -i fileCount=0

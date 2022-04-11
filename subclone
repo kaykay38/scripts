@@ -1,7 +1,7 @@
+#!/bin/bash
 ##########################################
 # @author From Internet
 ##########################################
-#!/bin/bash
 
 # First parameter is the sub-directory-absolute-path
 # Second parameter is the link of the repo

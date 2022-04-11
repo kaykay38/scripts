@@ -1,8 +1,8 @@
+#!/bin/sh
 #############################################################
 # @author Mia Hunt
 # @github kaykay38
 #############################################################
-#!/bin/sh
 status="$(playerctl status)"
 spotifyStatus="$(playerctl --player=spotify status)"
 mpvStatus="$(playerctl --player=mpv status)"

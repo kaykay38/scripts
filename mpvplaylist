@@ -1,8 +1,8 @@
+#!/bin/bash -x
 #############################################################
 # @author Mia Hunt
 # @github kaykay38
 #############################################################
-#!/bin/bash -x
 urlRegex="^https://.*"
 media="$(echo -e "Music\nVideos\nPodcasts"| rofi -matching fuzzy -theme $HOME/.config/rofi/text.rasi -dmenu -i -l 3 -p "Playlists")"
 if [[ $media =~ Music || $media =~ Videos || $media =~ Podcasts ]]; then

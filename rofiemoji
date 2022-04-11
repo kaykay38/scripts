@@ -1,8 +1,7 @@
-#############################################################
-# @author Mia Hunt
-# @github kaykay38
-#############################################################
 #!/bin/env bash
+#############################################################
+# @author Luke Smith, Mia Hunt @github kaykay38
+#############################################################
 # The famous "get a menu of emojis to copy" script.
 
 # Get user selection via dmenu from emoji file.

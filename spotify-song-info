@@ -1,8 +1,8 @@
+#!/bin/bash
 #############################################################
 # @author Mia Hunt
 # @github kaykay38
 #############################################################
-#!/bin/bash
 status="$(sp status)"
 coverUrl="$(sp art)"
 cover="/tmp/$(echo $coverUrl | sed -E 's/https:\/\/i.scdn.co\/image\//spotify-/')"

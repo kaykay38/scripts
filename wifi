@@ -1,8 +1,8 @@
+#!/bin/sh
 #############################################################
 # @author Mia Hunt
 # @github kaykay38
 #############################################################
-#!/bin/sh
 
 [[ "$(cat /sys/class/net/w*/operstate 2>/dev/null)" = 'up' ]] && wifiicon="$(awk '/^\s*w/ { print "直 "int($3 * 100 / 70)"%" }' /proc/net/wireless) "
 wifiStatus="$wifiicon$(nmcli | grep 'wlp5s0: connected to ' | sed 's/wlp5s0: connected to //')"

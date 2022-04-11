@@ -1,8 +1,8 @@
+#!/bin/bash
 #############################################################
 # @author Mia Hunt
 # @github kaykay38
 #############################################################
-#!/bin/bash
 coverUrl="$(playerctl --player=mpv metadata --format "{{mpris:artUrl}}")"
 coverUrl="$(echo "${coverUrl/open.spotify.com/i.scdn.co}")"
 cover="/tmp/artUrl-$(echo "${coverUrl//\//}" | sed 's/https://')"

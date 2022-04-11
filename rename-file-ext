@@ -1,9 +1,9 @@
+#!/bin/sh
 #############################################################
 # @author Mia Hunt
 # @github kaykay38
 # TODO change if statements to switch-case
 #############################################################
-#!/bin/sh
 
 declare startDir=$1
 declare imgDir=$2

@@ -1,6 +1,6 @@
+#!/bin/sh
 #############################################################
 # @author Mia Hunt
 #############################################################
-#!/bin/sh
 export LD_PRELOAD=/usr/lib/spotifywm.so
 /opt/spotify/spotify "$@"

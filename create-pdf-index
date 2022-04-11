@@ -1,8 +1,8 @@
+#!/bin/sh
 #############################################################
 # @author Mia Hunt
 # @github kaykay38
 #############################################################
-#!/bin/sh
 # requires ghostscript
 # $1 = original pdf
 # $2 = index output pdf
