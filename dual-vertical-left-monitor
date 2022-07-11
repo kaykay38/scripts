@@ -3,13 +3,13 @@
 # @author Mia Hunt
 # @github kaykay38
 #############################################################
-# vertMonitorStatus="$(xrandr | grep 'connected\s*.*\s*1080x1920')"
-# main2kMonitorStatus="$(xrandr | grep 'connected\s*.*\s*2560x1440')"
-vertMonitor="$(xrandr 2>/dev/null | grep 'DP-0 connected')"
-main2kMonitor="$(xrandr 2>/dev/null | grep 'DP-2.8 connected')"
-if [[ ! -z "$main2kMonitor" ]] && [[ ! -z $vertMonitor ]]; then
-    xrandr --output DP-2.8 --primary --mode 2560x1440 --pos 1080x0 --rotate normal --output DP-0 --mode 1920x1080 --pos 0x0 --rotate left --output DP-0.8 --off --output DP-1 --off --output DP-2 --off --output DP-3 --off --output HDMI-0 --off --output DP-4 --off --output DP-5 --off --output DP-1-1 --off --output DP-1-2 --off --output HDMI-1-1 --off --output DP-1-3 --off --output DP-1-4 --off --output DP-1-5 --off
+# monitor_1080pStatus="$(xrandr | grep 'connected\s*.*\s*1080x1920')"
+# monitor_2kStatus="$(xrandr | grep 'connected\s*.*\s*2560x1440')"
+monitor_1080p="$(xrandr 2>/dev/null | grep ' connected (' | cut -d' ' -f1)"
+monitor_2k="$(xrandr 2>/dev/null | grep ' connected 2560x1440+0+0 ' | cut -d' ' -f1)"
+if [[ ! -z "$monitor_2k" ]] && [[ ! -z $monitor_1080p ]]; then
+    xrandr --output "$monitor_2k" --primary --mode 2560x1440 --pos 1080x0 --rotate normal --output "$monitor_1080p" --mode 1920x1080 --pos 0x0 --rotate left --output "$monitor_1080p".8 --off --output DP-1 --off --output DP-2 --off --output DP-3 --off --output HDMI-0 --off --output DP-4 --off --output DP-5 --off --output DP-1-1 --off --output DP-1-2 --off --output HDMI-1-1 --off --output DP-1-3 --off --output DP-1-4 --off --output DP-1-5 --off
 else
-    xrandr --output DP-2.8 --primary --mode 2560x1440 --pos 1080x0 --rotate normal --output DP-0 --off --output DP-0.8 --off --output DP-1 --off --output DP-2 --off --output DP-3 --off --output HDMI-0 --off --output DP-4 --off --output DP-5 --off --output DP-1-1 --off --output DP-1-2 --off --output HDMI-1-1 --off --output DP-1-3 --off --output DP-1-4 --off --output DP-1-5 --off
+    xrandr --output "$monitor_2k" --primary --mode 2560x1440 --pos 1080x0 --rotate normal --output "$monitor_1080p" --off --output "$monitor_1080p".8 --off --output DP-1 --off --output DP-2 --off --output DP-3 --off --output HDMI-0 --off --output DP-4 --off --output DP-5 --off --output DP-1-1 --off --output DP-1-2 --off --output HDMI-1-1 --off --output DP-1-3 --off --output DP-1-4 --off --output DP-1-5 --off
 fi
 xwallpaper --zoom $HOME/.config/xwallpaper/wallpaper

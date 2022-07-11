@@ -3,14 +3,14 @@
 # @author Mia Hunt
 # @github kaykay38
 #############################################################
-left1080Monitor="$(xrandr 2>/dev/null | grep 'DP-0 connected')"
-main2kMonitor="$(xrandr 2>/dev/null | grep 'DP-2.8 connected')"
-if [[ ! -z "$main2kMonitor" ]] && [[ ! -z "$left1080Monitor" ]]; then
-    xrandr --output DP-2.8 --primary --mode 2560x1440 --pos 1920x0 --rotate normal --output DP-0 --mode 1920x1080 --pos 0x180 --rotate normal --output DP-1 --off --output DP-2 --off --output DP-3 --off --output HDMI-0 --off --output DP-4 --off --output DP-5 --off
-elif [[ -z "$main2kMonitor" ]] && [[ ! -z "$left1080Monitor" ]]; then
-    xrandr --output DP-0 --primary --mode 1920x1080 --rotate normal --output DP-2.8 --off --output DP-1 --off --output DP-2 --off --output DP-3 --off --output HDMI-0 --off --output DP-4 --off --output DP-5 --off
+monitor_1080p="$(xrandr 2>/dev/null | grep ' connected (' | cut -d' ' -f1)"
+monitor_2k="$(xrandr 2>/dev/null | grep ' connected 2560x1440+0+0 ' | cut -d' ' -f1)"
+if [[ ! -z "$monitor_2k" ]] && [[ ! -z "$monitor_1080p" ]]; then
+    xrandr --output "$monitor_2k" --primary --mode 2560x1440 --pos 1920x0 --rotate normal --output "$monitor_1080p" --mode 1920x1080 --pos 0x180 --rotate normal --output DP-1 --off --output DP-2 --off --output DP-3 --off --output HDMI-0 --off --output DP-4 --off --output DP-5 --off
+elif [[ -z "$monitor_2k" ]] && [[ ! -z "$monitor_1080p" ]]; then
+    xrandr --output "$monitor_1080p" --primary --mode 1920x1080 --rotate normal --output "$monitor_2k" --off --output DP-1 --off --output DP-2 --off --output DP-3 --off --output HDMI-0 --off --output DP-4 --off --output DP-5 --off
 else
-    xrandr --output DP-2.8 --primary --mode 2560x1440 --rotate normal --output DP-0 --off --output DP-1 --off --output DP-2 --off --output DP-3 --off --output HDMI-0 --off --output DP-4 --off --output DP-5 --off
+    xrandr --output "$monitor_2k" --primary --mode 2560x1440 --rotate normal --output "$monitor_1080p" --off --output DP-1 --off --output DP-2 --off --output DP-3 --off --output HDMI-0 --off --output DP-4 --off --output DP-5 --off
 fi
 
 xwallpaper --zoom $HOME/.config/xwallpaper/wallpaper
