@@ -32,7 +32,7 @@ USAGE_MSG= "todo by default displays today's TODO items\n\n" +\
 "      prev, previous       previous most recent TODO file\n" +\
 "      <date> ie. 6/16      specific date\n" +\
 "   -v, --version        Display version information\n" 
-INFO_MSG="todo 1.3 (February 27, 2022)\n" +\
+VERSION_MSG="todo 1.3 (February 27, 2022)\n" +\
 "kaykay38 <https://github.com/kaykay38>\n" +\
 "Written in python\n\n" +\
 "todo displays and creates a daily TODO list.\n" +\
@@ -218,11 +218,12 @@ if not os.path.exists(todo_filepath):
         "|----------|-------------|-------------|-------------|-------------|-------------|-------------|-------------|\n"+\
 		"| 07:00 AM |             |             |             |             |             |             |             |\n"+\
 		"| 08:00 AM |             |             |             |             |             |             |             |\n"+\
-		"| 09:00 AM | CSCD467     | CSCD467     | CSCD467     | CSCD467     | CSCD467     |             |             |\n"+\
+		"| 09:00 AM | CSCD467     | CSCD467     | CSCD467     | CSCD467     |             |             |             |\n"+\
 		"| 10:00 AM |             |             |             |             |             |             |             |\n"+\
 		"| 11:00 AM | Meet w/Mark | Meet w/Mark | Meet w/Mark | Meet w/Mark | Meet w/Mark |             |             |\n"+\
 		"| 11:15 AM |             |             |             |             |             |             |             |\n"+\
 		"| 12:00 PM | CSCD202     | CSCD202     | CSCD202     | CSCD202     | Work @CA    |             |             |\n"+\
+		"| 12:30 PM |             | Work @CA    |             | Work @CA    | Meet w/Suzi |             |             |\n"+\
 		"| 01:00 PM |             | Work @CA    |             | Work @CA    | Work @CA    |             |             |\n"+\
 		"| 02:00 PM |             | Work @CA    |             | Work @CA    | Work @CA    |             |             |\n"+\
 		"| 03:00 PM | CSCD490     | Work @CA    | CSCD490     | Work @CA    | Work @CA    |             |             |\n"+\
@@ -287,7 +288,7 @@ def main(argv):
             print (USAGE_MSG)
             sys.exit()
         elif opt in ('-v','--version'):
-            print (INFO_MSG)
+            print (VERSION_MSG)
             sys.exit()
         elif opt == '-s':
             lines=[]
