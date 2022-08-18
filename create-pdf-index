@@ -8,4 +8,11 @@
 # $2 = index output pdf
 # $3 = index.info file
 # example index.info
+while getopts ":h" option; do
+   case $option in
+    h) echo "Usage: create-pdf-index <source pdf> <output pdf> <index.info>"
+        exit 0;
+           ;;
+   esac
+done
 gs -sDEVICE=pdfwrite -q -dBATCH -dNOPAUSE -sOutputFile=$2 $3 -f $1
